@@ -17,7 +17,7 @@ angular.module('linagora.esn.mobile')
   .factory('esnMobilePushSubscriptionClient', function(esnMobileRestangular) {
 
     function save(subscription) {
-      return esnMobileRestangular.one('push').one('subscription').customPOST(subscription);
+      return esnMobileRestangular.one('push').all('subscriptions').customPOST(subscription);
     }
 
     return {

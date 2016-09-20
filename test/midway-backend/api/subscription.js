@@ -8,7 +8,7 @@ let Q = require('q');
 let redis = require('redis');
 let async = require('async');
 
-describe('The token API', function() {
+describe('The Push API', function() {
 
   let deps, mongoose, userId, user, app, redisClient, helpers, mobileApp;
 
@@ -70,7 +70,7 @@ describe('The token API', function() {
     async.parallel([helpers.mongo.dropDatabase], done);
   });
 
-  describe('The POST /push/subscription endpoint', () => {
+  describe('The POST /push/subscriptions endpoint', () => {
 
     it('should save the subscription', (done) => {
       function apiCall(application) {
@@ -83,7 +83,7 @@ describe('The token API', function() {
         };
 
         request(app.express)
-          .post('/api/push/subscription')
+          .post('/api/push/subscriptions')
           .send(subscription)
           .expect('Content-Type', /json/)
           .expect(200)
@@ -129,7 +129,7 @@ describe('The token API', function() {
         };
 
         request(app.express)
-          .post('/api/push/subscription')
+          .post('/api/push/subscriptions')
           .send(subscription)
           .expect('Content-Type', /json/)
           .expect(200)
