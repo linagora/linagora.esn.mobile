@@ -1,7 +1,7 @@
 {
-  "name": "linagora.esn.push",
+  "name": "linagora.esn.mobile",
   "version": "0.0.1",
-  "description": "OpenPaaS Push Notification Module",
+  "description": "OpenPaaS Mobile Application Adapter Module",
   "main": "lib/index.js",
   "devDependencies": {
     "body-parser": "1.15.2",
@@ -45,16 +45,14 @@
     "sinon-chai": "2.8.0",
     "superagent": "2.2.0",
     "redis": "2.6.2",
-    "linagora-rse": "git+https://ci.open-paas.org/stash/scm/or/rse.git#master",
     "supertest": "2.0.0"
   },
   "scripts": {
-    "test": "grunt test",
-    "postinstall": "./node_modules/bower/bin/bower install --allow-root"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "https://ci.open-paas.org/stash/scm/om/linagora.esn.push.git"
+    "url": "https://ci.open-paas.org/stash/scm/om/linagora.esn.mobile.git"
   },
   "author": "Linagora R&D",
   "license": "AGPLv3",
