@@ -77,8 +77,11 @@ describe('The Push API', function() {
         let deferred = Q.defer();
         let subscription = {
           user: String(userId),
-          application: String(application._id),
-          application_platform: 'android',
+          application: application.uuid,
+          device: {
+            uuid: '123',
+            platform: 'android'
+          },
           token: uuid.v4()
         };
 
@@ -114,7 +117,6 @@ describe('The Push API', function() {
     });
 
     it('should update the user subscription with the new token if one already exists', (done) => {
-
       const tokenA = uuid.v4();
       const tokenB = uuid.v4();
       let createdSubcription, createdApp;
@@ -123,8 +125,11 @@ describe('The Push API', function() {
         let deferred = Q.defer();
         let subscription = {
           user: String(userId),
-          application: String(createdApp._id),
-          application_platform: 'android',
+          application: createdApp.uuid,
+          device: {
+            uuid: '123',
+            platform: 'android'
+          },
           token: tokenB
         };
 
@@ -164,8 +169,11 @@ describe('The Push API', function() {
       function createSubscription() {
         let subscription = {
           user: String(userId),
-          application: String(createdApp._id),
-          application_platform: 'android',
+          application: createdApp._id,
+          device: {
+            uuid: '123',
+            platform: 'android'
+          },
           token: tokenA
         };
         return app.lib.pushsubscription.create(subscription).then((result) => {
@@ -179,7 +187,62 @@ describe('The Push API', function() {
         .then(apiCall)
         .then(checkResult)
         .catch(done);
-
     });
+  });
+
+  it('should not create another subscription when the same subscription data is sent', (done) => {
+    const token = uuid.v4();
+    let createdApp;
+
+    function apiCall() {
+      let deferred = Q.defer();
+      let subscription = {
+        user: String(userId),
+        application: createdApp.uuid,
+        device: {
+          uuid: '123',
+          platform: 'android'
+        },
+        token: token
+      };
+
+      request(app.express)
+        .post('/api/push/subscriptions')
+        .send(subscription)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            return deferred.reject(err);
+          }
+          deferred.resolve(res.body);
+        });
+      return deferred.promise;
+    }
+
+    function checkResult(result) {
+      if (!result) {
+        return done(new Error('Can not get result'));
+      }
+
+      app.lib.pushsubscription.getForUser(userId).then((result) => {
+        expect(result.length).to.equal(1);
+        expect(result[0].token).to.equal(token);
+        done();
+      }, done);
+    }
+
+    function createApp() {
+      return app.lib.application.create(mobileApp).then((result) => {
+        createdApp = result;
+        return result;
+      });
+    }
+
+    createApp()
+      .then(apiCall)
+      .then(apiCall)
+      .then(checkResult)
+      .catch(done);
   });
 });

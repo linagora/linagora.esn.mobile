@@ -9,6 +9,10 @@ module.exports = function(dependencies) {
     return MobileApplication.findById(id);
   }
 
+  function getFromUuid(uuid) {
+    return MobileApplication.findOne({uuid: uuid});
+  }
+
   function create(application) {
     let app = new MobileApplication(application);
     return app.save();
@@ -16,7 +20,8 @@ module.exports = function(dependencies) {
 
   return {
     get: get,
-    create: create
+    create: create,
+    getFromUuid: getFromUuid
   };
 
 };

@@ -2,7 +2,7 @@
   "name": "linagora.esn.mobile",
   "version": "0.0.1",
   "description": "OpenPaaS Mobile Application Adapter Module",
-  "main": "lib/index.js",
+  "main": "index.js",
   "devDependencies": {
     "body-parser": "1.15.2",
     "chai": "3.5.0",

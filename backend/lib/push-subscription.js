@@ -25,7 +25,7 @@ module.exports = function(dependencies) {
     return MobilePushSubscription.findOneAndUpdate({
       user: subscription.user,
       application: subscription.application,
-      application_platform: subscription.application_platform
+      'device.uuid': subscription.device.uuid
     }, subscription, {new: true, upsert: true}).exec();
   }
 

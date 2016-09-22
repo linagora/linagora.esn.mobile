@@ -1,14 +1,16 @@
 'use strict';
 
-let q = require('q');
+let Q = require('q');
+const PROVIDER_NAME = 'apns';
 
 module.exports = function(dependencies) {
 
-  let logger = dependencies('logger');
+  function send(application, message, subscription) {
+    if (application.push.provider !== PROVIDER_NAME) {
+      return Q.reject(new Error(application.push.provider + ' is not compatible with Apple APNS transport'));
+    }
 
-  function send(message, subscription) {
-    logger.debug('APNS Sending message to %s', subscription);
-    return q({});
+    return Q.reject('APNS is not implemented, you should use Firebase provider');
   }
 
   return {

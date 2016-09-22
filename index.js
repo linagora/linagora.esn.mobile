@@ -10,13 +10,15 @@ let modbileAppModule = new AwesomeModule(MODULE_NAME, {
   dependencies: [
     new Dependency(Dependency.TYPE_NAME, 'linagora.esn.core.logger', 'logger'),
     new Dependency(Dependency.TYPE_NAME, 'linagora.esn.core.pubsub', 'pubsub'),
+    new Dependency(Dependency.TYPE_NAME, 'linagora.esn.core.webserver.wrapper', 'webserver-wrapper'),
+    new Dependency(Dependency.TYPE_NAME, 'linagora.esn.core.webserver.middleware.authorization', 'authorizationMW'),
     new Dependency(Dependency.TYPE_NAME, 'linagora.esn.core.user', 'user'),
     new Dependency(Dependency.TYPE_NAME, 'linagora.esn.core.db', 'db')
   ],
   states: {
     lib: function(dependencies, callback) {
-      let libModule = require('./lib')(dependencies);
-      let api = require('./webserver/api')(dependencies, libModule);
+      let libModule = require('./backend/lib')(dependencies);
+      let api = require('./backend/webserver/api')(dependencies, libModule);
 
       return callback(null, {
         lib: libModule,
@@ -25,7 +27,7 @@ let modbileAppModule = new AwesomeModule(MODULE_NAME, {
     },
 
     deploy: function(dependencies, callback) {
-      let app = require('./webserver/application')(this, dependencies);
+      let app = require('./backend/webserver/application')(this, dependencies);
       app.use('/api', this.api);
 
       let webserverWrapper = dependencies('webserver-wrapper');
