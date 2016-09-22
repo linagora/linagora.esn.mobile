@@ -8,8 +8,9 @@ module.exports = function(dependencies) {
   let pushsubscription = require('./push-subscription')(dependencies);
   let push = require('./push')(dependencies, {application, pushsubscription});
 
-  function start() {
+  function start(callback) {
     logger.info('Starting the mobile module');
+    callback();
   }
 
   return {

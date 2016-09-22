@@ -16,15 +16,15 @@ describe('The Push sender module', () => {
     const dependencies = function() {};
     beforeEach(() => {
       mockery.registerMock('./transport/gcm', function() {
-        return {};
+        return function() {return {};};
       });
 
       mockery.registerMock('./transport/apns', function() {
-        return {};
+        return function() {return {};};
       });
 
       mockery.registerMock('./transport/firebase', function() {
-        return firebase;
+        return function() {return firebase;};
       });
     });
 
@@ -66,7 +66,7 @@ describe('The Push sender module', () => {
     });
 
     it('should resolve with the transport', (done) => {
-      let platforms = [{name: 'ios'}, {name: 'android', provider: 'firebase'}];
+      let platforms = [{name: 'ios'}, {name: 'android', push: {provider: 'firebase'}}];
       getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'android'}}).then((transport) => {
         expect(transport).to.deep.equals(firebase);
         done();
@@ -80,11 +80,11 @@ describe('The Push sender module', () => {
     const dependencies = function() {};
     beforeEach(() => {
       mockery.registerMock('./transport/gcm', function() {
-        return {};
+        return function() {return {};};
       });
 
       mockery.registerMock('./transport/apns', function() {
-        return {};
+        return function() {return {};};
       });
     });
 
@@ -103,10 +103,10 @@ describe('The Push sender module', () => {
       let sendSpy = sinon.spy();
       let message = {title: 'Hello!'};
       let subscription = {_id: 1, device: {platform: 'android'}};
-      let platforms = [{name: 'ios'}, {name: 'android', provider: 'firebase'}];
+      let platforms = [{name: 'ios'}, {name: 'android', push: {provider: 'firebase'}}];
 
       mockery.registerMock('./transport/firebase', function() {
-        return {send: sendSpy};
+        return function() {return {send: sendSpy};};
       });
 
       getModule(dependencies, {}).sendToSubscription({platforms}, message, subscription).then((result) => {

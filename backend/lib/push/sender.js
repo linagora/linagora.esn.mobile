@@ -25,11 +25,11 @@ module.exports = function(dependencies, lib) {
       return Q.reject(new Error('Can not find application plaform from subscription platform'));
     }
 
-    if (!applicationPlatform.provider) {
+    if (!applicationPlatform.push || !applicationPlatform.push.provider) {
       return Q.reject(new Error('Provider has not been defined for application platform'));
     }
 
-    return Q.resolve(transports[applicationPlatform.provider]);
+    return Q.resolve(transports[applicationPlatform.push.provider](applicationPlatform));
   }
 
   function sendToSubscription(application, message, subscription) {
@@ -38,7 +38,7 @@ module.exports = function(dependencies, lib) {
         return Q.reject(new Error('No transport has been found for subcription ' + subscription._id));
       }
 
-      return transport.send(application, message, [subscription]);
+      return transport.send(message, [subscription]);
     });
   }
 
