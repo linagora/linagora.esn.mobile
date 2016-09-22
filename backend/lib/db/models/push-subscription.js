@@ -6,7 +6,7 @@ module.exports = function(dependencies) {
   let ObjectId = mongoose.Schema.ObjectId;
   let MobilePushSubscriptionSchema = new mongoose.Schema({
     user: {type: ObjectId, ref: 'User', required: true},
-    application: {type: ObjectId, ref: 'PushApplication', required: true},
+    application: {type: ObjectId, ref: 'MobileApplication', required: true},
     device: {
       uuid: {type: String, required: true},
       platform: {type: String, required: true},
