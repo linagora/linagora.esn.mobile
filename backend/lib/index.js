@@ -14,10 +14,10 @@ module.exports = function(dependencies) {
   }
 
   return {
-    application: application,
-    pushsubscription: pushsubscription,
-    push: push,
-    models: models,
-    start: start
+    application,
+    pushsubscription,
+    push,
+    models,
+    start
   };
 };

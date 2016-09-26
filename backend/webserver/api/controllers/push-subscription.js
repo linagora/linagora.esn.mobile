@@ -65,8 +65,8 @@ module.exports = function(dependencies, lib) {
   }
 
   return {
-    createOrUpdateSubscription: createOrUpdateSubscription,
-    getUserSubscriptions: getUserSubscriptions
+    createOrUpdateSubscription,
+    getUserSubscriptions
   };
 
 };

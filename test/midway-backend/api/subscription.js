@@ -66,13 +66,13 @@ describe('The Push API', function() {
     user.save(done);
   });
 
-  afterEach((done) => {
+  afterEach(function(done) {
     async.parallel([helpers.mongo.dropDatabase], done);
   });
 
-  describe('The POST /push/subscriptions endpoint', () => {
+  describe('The POST /push/subscriptions endpoint', function() {
 
-    it('should save the subscription', (done) => {
+    it('should save the subscription', function(done) {
       function apiCall(application) {
         let deferred = Q.defer();
         let subscription = {
@@ -104,7 +104,7 @@ describe('The Push API', function() {
           return done(new Error('Can not get result'));
         }
 
-        app.lib.pushsubscription.getForUser(userId).then((result) => {
+        app.lib.pushsubscription.getForUser(userId).then(result => {
           expect(result.length).to.equal(1);
           done();
         }, done);
@@ -116,7 +116,7 @@ describe('The Push API', function() {
         .catch(done);
     });
 
-    it('should update the user subscription with the new token if one already exists', (done) => {
+    it('should update the user subscription with the new token if one already exists', function(done) {
       const tokenA = uuid.v4();
       const tokenB = uuid.v4();
       let createdSubcription, createdApp;
@@ -152,7 +152,7 @@ describe('The Push API', function() {
           return done(new Error('Can not get result'));
         }
 
-        app.lib.pushsubscription.getForUser(userId).then((result) => {
+        app.lib.pushsubscription.getForUser(userId).then(result => {
           expect(result.length).to.equal(1);
           expect(result[0].token).to.equal(tokenB);
           done();
@@ -160,7 +160,7 @@ describe('The Push API', function() {
       }
 
       function createApp() {
-        return app.lib.application.create(mobileApp).then((result) => {
+        return app.lib.application.create(mobileApp).then(result => {
           createdApp = result;
           return result;
         });
@@ -176,7 +176,7 @@ describe('The Push API', function() {
           },
           token: tokenA
         };
-        return app.lib.pushsubscription.create(subscription).then((result) => {
+        return app.lib.pushsubscription.create(subscription).then(result => {
           createdSubcription = result;
           return result;
         });
@@ -190,7 +190,7 @@ describe('The Push API', function() {
     });
   });
 
-  it('should not create another subscription when the same subscription data is sent', (done) => {
+  it('should not create another subscription when the same subscription data is sent', function(done) {
     const token = uuid.v4();
     let createdApp;
 
@@ -225,7 +225,7 @@ describe('The Push API', function() {
         return done(new Error('Can not get result'));
       }
 
-      app.lib.pushsubscription.getForUser(userId).then((result) => {
+      app.lib.pushsubscription.getForUser(userId).then(result => {
         expect(result.length).to.equal(1);
         expect(result[0].token).to.equal(token);
         done();
@@ -233,7 +233,7 @@ describe('The Push API', function() {
     }
 
     function createApp() {
-      return app.lib.application.create(mobileApp).then((result) => {
+      return app.lib.application.create(mobileApp).then(result => {
         createdApp = result;
         return result;
       });

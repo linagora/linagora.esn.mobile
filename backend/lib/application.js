@@ -2,8 +2,8 @@
 
 module.exports = function(dependencies) {
 
-  var mongoose = dependencies('db').mongo.mongoose;
-  var MobileApplication = mongoose.model('MobileApplication');
+  let mongoose = dependencies('db').mongo.mongoose;
+  let MobileApplication = mongoose.model('MobileApplication');
 
   function get(id) {
     return MobileApplication.findById(id);
@@ -19,9 +19,8 @@ module.exports = function(dependencies) {
   }
 
   return {
-    get: get,
-    create: create,
-    getFromUuid: getFromUuid
+    get,
+    create,
+    getFromUuid
   };
-
 };

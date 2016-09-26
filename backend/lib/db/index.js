@@ -5,8 +5,5 @@ module.exports = function(dependencies) {
   let application = require('./models/application')(dependencies);
   let subscription = require('./models/push-subscription')(dependencies);
 
-  return {
-    application: application,
-    subscription: subscription
-  };
+  return { application, subscription };
 };

@@ -2,8 +2,8 @@
 
 module.exports = function(dependencies) {
 
-  var mongoose = dependencies('db').mongo.mongoose;
-  var MobilePushSubscription = mongoose.model('MobilePushSubscription');
+  let mongoose = dependencies('db').mongo.mongoose;
+  let MobilePushSubscription = mongoose.model('MobilePushSubscription');
 
   function get(id) {
     return MobilePushSubscription.findById(id);
@@ -30,11 +30,11 @@ module.exports = function(dependencies) {
   }
 
   return {
-    get: get,
-    getByAppForUser: getByAppForUser,
-    getForUser: getForUser,
-    create: create,
-    createOrUpdate: createOrUpdate
+    get,
+    getByAppForUser,
+    getForUser,
+    create,
+    createOrUpdate
   };
 
 };

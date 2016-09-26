@@ -1,12 +1,12 @@
 'use strict';
 
-var express = require('express');
+let express = require('express');
 
 module.exports = function(dependencies, lib) {
 
-  var authorizationMW = dependencies('authorizationMW');
-  var pushSubscriptionController = require('./controllers/push-subscription')(dependencies, lib);
-  var router = express.Router();
+  let authorizationMW = dependencies('authorizationMW');
+  let pushSubscriptionController = require('./controllers/push-subscription')(dependencies, lib);
+  let router = express.Router();
 
   router.get('/push/subscriptions', authorizationMW.requiresAPILogin, pushSubscriptionController.getUserSubscriptions);
   router.post('/push/subscriptions', authorizationMW.requiresAPILogin, pushSubscriptionController.createOrUpdateSubscription);
