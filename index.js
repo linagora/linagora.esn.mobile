@@ -32,9 +32,10 @@ let modbileAppModule = new AwesomeModule(MODULE_NAME, {
 
       let webserverWrapper = dependencies('webserver-wrapper');
       let frontendModules = [
-        'app.js',
-        'restangular.js',
-        'services.js'
+        'mobile.app.js',
+        'restangular.service.js',
+        'application-client.service.js',
+        'push-subscription-client.service.js'
       ];
       webserverWrapper.injectAngularModules(NAME, frontendModules, MODULE_NAME, ['esn']);
       webserverWrapper.addApp(NAME, app);
