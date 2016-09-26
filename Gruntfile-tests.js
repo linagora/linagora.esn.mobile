@@ -85,6 +85,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test-frontend', 'run the FrontEnd tests', ['karma:unit']);
   grunt.registerTask('test-frontend-all', 'run the FrontEnd tests on all possible browsers', ['karma:all']);
 
-  grunt.registerTask('test', ['test-backend', 'test-frontend']);
+  grunt.registerTask('test', ['linters', 'test-backend', 'test-midway-backend']);
   grunt.registerTask('default', ['test']);
 };
