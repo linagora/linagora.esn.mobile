@@ -2,9 +2,11 @@
 
 let AwesomeModule = require('awesome-module');
 let Dependency = AwesomeModule.AwesomeModuleDependency;
+let glob = require('glob-all');
 
-let NAME = 'mobile';
-let MODULE_NAME = 'linagora.esn.' + NAME;
+const NAME = 'mobile';
+const MODULE_NAME = 'linagora.esn.' + NAME;
+const FRONTEND_JS_PATH = __dirname + '/frontend/js/';
 
 let modbileAppModule = new AwesomeModule(MODULE_NAME, {
   dependencies: [
@@ -27,18 +29,17 @@ let modbileAppModule = new AwesomeModule(MODULE_NAME, {
     },
 
     deploy: function(dependencies, callback) {
-      let app = require('./backend/webserver/application')(this, dependencies);
-      app.use('/api', this.api);
-
       let webserverWrapper = dependencies('webserver-wrapper');
-      let frontendModules = [
-        'mobile.app.js',
-        'restangular.service.js',
-        'application-client.service.js',
-        'push-subscription-client.service.js'
-      ];
+      let app = require('./backend/webserver/application')(this, dependencies);
+      let frontendModules = glob.sync([
+        FRONTEND_JS_PATH + '**/*.app.js',
+        FRONTEND_JS_PATH + '**/!(*spec).js'
+      ]).map(filepath => filepath.replace(FRONTEND_JS_PATH, ''));
+
+      app.use('/api', this.api);
       webserverWrapper.injectAngularModules(NAME, frontendModules, MODULE_NAME, ['esn']);
       webserverWrapper.addApp(NAME, app);
+
       return callback();
     },
 
