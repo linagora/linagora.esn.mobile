@@ -14,6 +14,7 @@ describe('The Push sender module', () => {
   describe('The getTransport function', () => {
     const firebase = {find: 'me'};
     const dependencies = function() {};
+
     beforeEach(() => {
       mockery.registerMock('./transport/gcm', function() {
         return function() {return {};};
@@ -28,46 +29,49 @@ describe('The Push sender module', () => {
       });
     });
 
-    it('should reject when subscription is undefined', (done) => {
-      getModule(dependencies, {}).getTransport().then(done, (err) => {
+    it('should reject when subscription is undefined', done => {
+      getModule(dependencies, {}).getTransport().then(done, err => {
         expect(err.message).to.match(/Subscription is not valid/);
         done();
       });
     });
 
-    it('should reject when subscription.device is undefined', (done) => {
-      getModule(dependencies, {}).getTransport(null, {}).then(done, (err) => {
+    it('should reject when subscription.device is undefined', done => {
+      getModule(dependencies, {}).getTransport(null, {}).then(done, err => {
         expect(err.message).to.match(/Subscription is not valid/);
         done();
       });
     });
 
-    it('should reject when subscription.device.platform is undefined', (done) => {
-      getModule(dependencies, {}).getTransport(null, {device: {}}).then(done, (err) => {
+    it('should reject when subscription.device.platform is undefined', done => {
+      getModule(dependencies, {}).getTransport(null, {device: {}}).then(done, err => {
         expect(err.message).to.match(/Subscription is not valid/);
         done();
       });
     });
 
-    it('should reject when application platform can not be found from subscription platform', (done) => {
+    it('should reject when application platform can not be found from subscription platform', done => {
       let platforms = [{name: 'ios'}, {name: 'android'}];
-      getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'windows'}}).then(done, (err) => {
+
+      getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'windows'}}).then(done, err => {
         expect(err.message).to.match(/Can not find application plaform from subscription platform/);
         done();
       });
     });
 
-    it('should reject when application platform provider can not be found from subscription platform', (done) => {
+    it('should reject when application platform provider can not be found from subscription platform', done => {
       let platforms = [{name: 'ios'}, {name: 'android'}];
-      getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'android'}}).then(done, (err) => {
+
+      getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'android'}}).then(done, err => {
         expect(err.message).to.match(/Provider has not been defined for application platform/);
         done();
       });
     });
 
-    it('should resolve with the transport', (done) => {
+    it('should resolve with the transport', done => {
       let platforms = [{name: 'ios'}, {name: 'android', push: {provider: 'firebase'}}];
-      getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'android'}}).then((transport) => {
+
+      getModule(dependencies, {}).getTransport({platforms}, {device: {platform: 'android'}}).then(transport => {
         expect(transport).to.deep.equals(firebase);
         done();
       }, done);
@@ -78,6 +82,7 @@ describe('The Push sender module', () => {
   describe('The sendToSubscription function', () => {
 
     const dependencies = function() {};
+
     beforeEach(() => {
       mockery.registerMock('./transport/gcm', function() {
         return function() {return {};};
@@ -88,18 +93,18 @@ describe('The Push sender module', () => {
       });
     });
 
-    it('should reject when getTransport fails', (done) => {
+    it('should reject when getTransport fails', done => {
       let message = {title: 'Hello!'};
       let subscription = {_id: 1, device: {platform: 'ios'}};
       let platforms = [{name: 'ios'}, {name: 'android', provider: 'firebase'}];
 
-      getModule(dependencies, {}).sendToSubscription({platforms}, message, subscription).then(done, (err) => {
+      getModule(dependencies, {}).sendToSubscription({platforms}, message, subscription).then(done, err => {
         expect(err).to.exist;
         done();
       });
     });
 
-    it('should call transport', (done) => {
+    it('should call transport', done => {
       let sendSpy = sinon.spy();
       let message = {title: 'Hello!'};
       let subscription = {_id: 1, device: {platform: 'android'}};
@@ -109,7 +114,7 @@ describe('The Push sender module', () => {
         return function() {return {send: sendSpy};};
       });
 
-      getModule(dependencies, {}).sendToSubscription({platforms}, message, subscription).then((result) => {
+      getModule(dependencies, {}).sendToSubscription({platforms}, message, subscription).then(() => {
         expect(sendSpy).to.haveBeenCalledOnce;
         done();
       }, done);
@@ -131,7 +136,7 @@ describe('The Push sender module', () => {
       });
     });
 
-    it('should reject when application search rejects', (done) => {
+    it('should reject when application search rejects', done => {
       const error = 'This is an error';
       let application = {
         getFromUuid: function() {
@@ -139,20 +144,20 @@ describe('The Push sender module', () => {
         }
       };
 
-      getModule({}, {application}).sendToApplicationUuid().then(done, (err) => {
+      getModule({}, {application}).sendToApplicationUuid().then(done, err => {
         expect(err.message).to.equals(error);
         done();
       });
     });
 
-    it('should reject when application can not be found', (done) => {
+    it('should reject when application can not be found', done => {
       let application = {
         getFromUuid: function() {
           return Q.resolve();
         }
       };
 
-      getModule({}, {application}).sendToApplicationUuid().then(done, (err) => {
+      getModule({}, {application}).sendToApplicationUuid().then(done, err => {
         expect(err.message).to.match(/has not been found/);
         done();
       });

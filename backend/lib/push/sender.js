@@ -16,11 +16,13 @@ module.exports = function(dependencies, lib) {
 
   function getTransport(application, subscription) {
     let platform = subscription && subscription.device && subscription.device.platform ? subscription.device.platform.toLowerCase() : undefined;
+
     if (!platform) {
       return Q.reject(new Error('Subscription is not valid'));
     }
 
     let applicationPlatform = _.find(application.platforms, item => item.name.toLowerCase() === platform.toLowerCase());
+
     if (!applicationPlatform) {
       return Q.reject(new Error('Can not find application plaform from subscription platform'));
     }
@@ -33,7 +35,7 @@ module.exports = function(dependencies, lib) {
   }
 
   function sendToSubscription(application, message, subscription) {
-    return getTransport(application, subscription).then((transport) => {
+    return getTransport(application, subscription).then(transport => {
       if (!transport) {
         return Q.reject(new Error('No transport has been found for subcription ' + subscription._id));
       }
@@ -52,13 +54,13 @@ module.exports = function(dependencies, lib) {
 
   function sendToApplicationUuid(applicationUuid, message, usersId) {
 
-    return applicationModule.getFromUuid(applicationUuid).then((application) => {
+    return applicationModule.getFromUuid(applicationUuid).then(application => {
 
       if (!application) {
         return Q.reject(new Error('Application ' + applicationUuid + ' has not been found'));
       }
 
-      return Q.all(usersId.map(userId => getApplicationSubscriptionsOfUser(application._id, userId).then((subscriptions) => {
+      return Q.all(usersId.map(userId => getApplicationSubscriptionsOfUser(application._id, userId).then(subscriptions => {
         if (!subscriptions || !subscriptions.length) {
           return Q.when([]);
         }

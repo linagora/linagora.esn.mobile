@@ -44,6 +44,7 @@ describe('The Push API', function() {
         }
       },
       authorizationMW: {
+        /*eslint no-unused-vars: ["error", {"args": "after-used"}]*/
         requiresAPILogin: function(req, res, next) {
           req.user = {
             _id: userId
@@ -96,6 +97,7 @@ describe('The Push API', function() {
             }
             deferred.resolve(res.body);
           });
+
         return deferred.promise;
       }
 
@@ -119,7 +121,7 @@ describe('The Push API', function() {
     it('should update the user subscription with the new token if one already exists', function(done) {
       const tokenA = uuid.v4();
       const tokenB = uuid.v4();
-      let createdSubcription, createdApp;
+      let createdApp;
 
       function apiCall() {
         let deferred = Q.defer();
@@ -144,6 +146,7 @@ describe('The Push API', function() {
             }
             deferred.resolve(res.body);
           });
+
         return deferred.promise;
       }
 
@@ -162,6 +165,7 @@ describe('The Push API', function() {
       function createApp() {
         return app.lib.application.create(mobileApp).then(result => {
           createdApp = result;
+
           return result;
         });
       }
@@ -176,10 +180,8 @@ describe('The Push API', function() {
           },
           token: tokenA
         };
-        return app.lib.pushsubscription.create(subscription).then(result => {
-          createdSubcription = result;
-          return result;
-        });
+
+        return app.lib.pushsubscription.create(subscription);
       }
 
       createApp()
@@ -217,6 +219,7 @@ describe('The Push API', function() {
           }
           deferred.resolve(res.body);
         });
+
       return deferred.promise;
     }
 
@@ -235,6 +238,7 @@ describe('The Push API', function() {
     function createApp() {
       return app.lib.application.create(mobileApp).then(result => {
         createdApp = result;
+
         return result;
       });
     }

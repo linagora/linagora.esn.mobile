@@ -18,6 +18,7 @@ module.exports = function(dependencies) {
       service.send(gcmMessage, {registrationTokens: subscriptions.map(subscription => subscription.token)}, function(err, response) {
         if (err) {
           logger.error('Error while sending GCM message', err);
+
           return defer.reject(err);
         }
         defer.resolve(response);

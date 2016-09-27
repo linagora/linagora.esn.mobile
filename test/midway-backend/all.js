@@ -1,4 +1,5 @@
 'use strict';
+/*eslint no-console: "off"*/
 
 var mockery = require('mockery');
 var chai = require('chai');
@@ -35,9 +36,9 @@ before(function() {
   this.helpers = {};
   this.helpers.loadApplication = function(dependencies) {
     var lib = require('../../backend/lib')(dependencies);
-
     var mongoose = dependencies('db').mongo.mongoose;
     var ObjectId = mongoose.Schema.ObjectId;
+
     mongoose.model('User', new mongoose.Schema({
       _id: {type: ObjectId, required: true},
       username: {type: String, required: true},
@@ -45,8 +46,10 @@ before(function() {
 
     var api = require('../../backend/webserver/api')(dependencies, lib);
     var app = require('../../backend/webserver/application')(dependencies);
+
     app.use(bodyParser.json());
     app.use('/api', api);
+
     return {
       express: app,
       lib: lib,
@@ -56,6 +59,7 @@ before(function() {
 
   this.helpers.resetRedis = function(callback) {
     var redisClient = redis.createClient(testEnv.redisPort);
+
     return redisClient.flushall(callback);
   };
 
@@ -69,6 +73,7 @@ before(function() {
           db.dropDatabase(function(err) {
             if (err) {
               console.log('Error while droping the database, retrying...', err);
+
               return _dropDatabase();
             }
             db.close(callback);

@@ -8,9 +8,9 @@ module.exports = function(dependencies, lib) {
     let appUuid = req.body.application;
 
     function create(subscription) {
-      lib.pushsubscription.createOrUpdate(subscription).then((result) => {
+      lib.pushsubscription.createOrUpdate(subscription).then(result => {
         res.status(200).json(result);
-      }, (err) => {
+      }, err => {
         logger.error('Can not save subscription', err);
         res.status(500).json({
           error: {
@@ -22,7 +22,7 @@ module.exports = function(dependencies, lib) {
       });
     }
 
-    lib.application.getFromUuid(appUuid).then((application) => {
+    lib.application.getFromUuid(appUuid).then(application => {
       if (!application) {
         return res.status(404).json({error: {code: 404, message: 'Not found', details: 'Application ' + appUuid + ' has not been found'}});
       }
@@ -37,7 +37,7 @@ module.exports = function(dependencies, lib) {
         user: req.user._id
       });
 
-    }, (err) => {
+    }, err => {
       logger.error('Can not get application', err);
       res.status(500).json({
         error: {
@@ -50,9 +50,9 @@ module.exports = function(dependencies, lib) {
   }
 
   function getUserSubscriptions(req, res) {
-    lib.pushsubscription.getForUser(req.user._id).then((result) => {
+    lib.pushsubscription.getForUser(req.user._id).then(result => {
       res.status(200).json(result || []);
-    }, (err) => {
+    }, err => {
       logger.error('Can not get user subscriptions', err);
       res.status(500).json({
         error: {

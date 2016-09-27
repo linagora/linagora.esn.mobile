@@ -2,11 +2,11 @@
 
 let Q = require('q');
 
-module.exports = function(dependencies) {
+module.exports = function() {
 
-  return function(applicationPlatform) {
+  return function() {
 
-    function send(message, subscription) {
+    function send() {
       return Q.reject('APNS is not implemented, you should use Firebase provider');
     }
 

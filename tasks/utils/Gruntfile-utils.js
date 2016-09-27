@@ -1,4 +1,5 @@
 'use strict';
+/*eslint no-console: "off"*/
 
 var util = require('util');
 var fs = require('fs-extra');
@@ -7,12 +8,15 @@ var path = require('path');
 function _args(grunt) {
   var opts = ['test', 'chunk', 'ci', 'reporter'];
   var args = {};
+
   opts.forEach(function(optName) {
     var opt = grunt.option(optName);
+
     if (opt) {
       args[optName] = '' + opt;
     }
   });
+
   return args;
 }
 
@@ -21,6 +25,7 @@ function _taskSuccessIfMatch(grunt, regex, info) {
     var done = grunt.task.current.async();
     var out = '' + chunk;
     var started = regex;
+
     if (started.test(out)) {
       grunt.log.write(info);
       done(true);
@@ -90,6 +95,7 @@ GruntfileUtils.prototype.runGrunt = function runGrunt() {
       grunt.log.writeln('succeeded');
     }
   }
+
   return {
     newProcess: function(task) {
       return {
@@ -127,6 +133,7 @@ GruntfileUtils.prototype.cleanEnvironment = function cleanEnvironment() {
   return function() {
     function _removeAllFilesInDirectory(directory) {
       var files;
+
       try {
         files = fs.readdirSync(directory);
       } catch (e) {
@@ -135,6 +142,7 @@ GruntfileUtils.prototype.cleanEnvironment = function cleanEnvironment() {
       if (files.length > 0) {
         for (var i = 0; i < files.length; i++) {
           var filePath = directory + '/' + files[i];
+
           if (fs.statSync(filePath).isFile()) {
             fs.unlinkSync(filePath);
           } else {
@@ -163,6 +171,7 @@ GruntfileUtils.prototype.cleanEnvironment = function cleanEnvironment() {
     }
 
     var done = this.async();
+
     done(true);
   };
 };

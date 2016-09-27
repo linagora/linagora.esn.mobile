@@ -21,6 +21,7 @@ beforeEach(function() {
   var addDep = function(name, dep) {
     depsStore[name] = dep;
   };
+
   this.moduleHelpers = {
     modulesPath: __dirname + '/../modules/',
     addDep: addDep,

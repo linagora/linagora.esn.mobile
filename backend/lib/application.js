@@ -15,6 +15,7 @@ module.exports = function(dependencies) {
 
   function create(application) {
     let app = new MobileApplication(application);
+
     return app.save();
   }
 
