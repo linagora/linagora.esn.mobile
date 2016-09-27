@@ -1,34 +1,17 @@
-# linagora.esn.push
+# linagora.esn.mobile
 
-Push Notification component for OpenPaaS ESN.
+Mobile Application Adapter Component for OpenPaaS ESN.
 
 ## Install
 
-**1. Clone linagora.esn.push**
+**1. Add component in the OpenPaaS ESN configuration file**
 
-Clone somewhere, the 2 following git repository:
-
- * https://ci.open-paas.org/stash/projects/OM/repos/linagora.esn.rse/browse
- * https://ci.open-paas.org/stash/projects/OM/repos/linagora.esn.push/browse
-
-Go inside linagora.esn.rse repo and run:
-
-    npm install
-    npm link
-
-Go inside linagora.esn.push and run:
-
-    npm link linagora-rse
-    npm install
-
-**2. Add component in the configuration file**
-
-Add "linagora.esn.push" in config/default.json:
+Add "linagora.esn.mobile" in config/default.json:
 
       "modules": [
         "linagora.esn.core.webserver",
         "linagora.esn.core.wsserver",
-        "linagora.esn.push"
+        "linagora.esn.mobile"
       ],
 
 **3. Create symlink**
@@ -36,4 +19,4 @@ Add "linagora.esn.push" in config/default.json:
 In your OpenPaaS ESN directory
 
     cd path_to_rse
-    ln -s path_to_push modules/linagora.esn.push
+    ln -s path_to_mobile modules/linagora.esn.mobile
