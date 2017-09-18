@@ -1,14 +1,19 @@
 before_script:
-  - . ~/.nvm/nvm.sh && nvm use 6
+  - . ~/.nvm/nvm.sh && nvm use 8
 
 stages:
   - test
+  - deploy_dev
 
 test:
   stage: test
   tags:
     - shell
     - online.net
+    - mongo
+    - elasticsearch
+    - redis
   script:
    - npm i
+   - npm update
    - grunt
