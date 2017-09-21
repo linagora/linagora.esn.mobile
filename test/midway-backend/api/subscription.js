@@ -3,7 +3,7 @@
 let request = require('supertest');
 let chai = require('chai');
 let expect = chai.expect;
-let uuid = require('node-uuid');
+let uuidV4 = require('uuid/v4');
 let Q = require('q');
 let redis = require('redis');
 let async = require('async');
@@ -83,7 +83,7 @@ describe('The Push API', function() {
             uuid: '123',
             platform: 'android'
           },
-          token: uuid.v4()
+          token: uuidV4()
         };
 
         request(app.express)
@@ -119,8 +119,8 @@ describe('The Push API', function() {
     });
 
     it('should update the user subscription with the new token if one already exists', function(done) {
-      const tokenA = uuid.v4();
-      const tokenB = uuid.v4();
+      const tokenA = uuidV4();
+      const tokenB = uuidV4();
       let createdApp;
 
       function apiCall() {
@@ -193,7 +193,7 @@ describe('The Push API', function() {
   });
 
   it('should not create another subscription when the same subscription data is sent', function(done) {
-    const token = uuid.v4();
+    const token = uuidV4();
     let createdApp;
 
     function apiCall() {
